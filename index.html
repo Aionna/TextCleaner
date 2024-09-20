@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cédric'sTextCleanerNet</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/twemoji.min.js" integrity="sha512-TBD8W9Hc4Jkb2ApFniN7jC1HjfdQU03eOlEhSqEtCEuRffeS5GdgPnwB1spv8Hm2zBEoG8l97vioBm7KLxJrYQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Space+Mono&display=swap');
         body {
@@ -47,23 +48,17 @@
         #sanitizeButton {
             display: block;
             margin: 20px auto;
-            padding: 15px;
-            background-color: #3d3d3d;
-            color: #2d2d2d;
+            padding: 15px 30px;
+            background-color: #4a4a4a;
+            color: #e0e0e0;
             border: none;
-            border-radius: 50% 50% 50% 70% / 50% 50% 70% 60%;
+            border-radius: 5px;
             cursor: pointer;
-            font-size: 24px;
+            font-size: 18px;
             transition: all 0.3s ease;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
         }
         #sanitizeButton:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 8px rgba(0,0,0,0.15);
-        }
-        #sanitizeButton:active {
-            transform: translateY(1px);
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            background-color: #5a5a5a;
         }
         footer {
             text-align: center;
@@ -71,11 +66,11 @@
             color: #a0a0a0;
             font-size: 0.9em;
         }
-        .parthenon {
-            text-align: center;
-            margin-top: 20px;
-            font-size: 24px;
-            letter-spacing: -2px;
+        .emoji {
+            height: 1em;
+            width: 1em;
+            margin: 0 .05em 0 .1em;
+            vertical-align: -0.1em;
         }
     </style>
 </head>
@@ -83,25 +78,33 @@
     <div class="container">
         <h1>Cédric'sTextCleaner.net</h1>
         <textarea id="inputText" placeholder="Enter your text here..."></textarea>
-        <button id="sanitizeButton">🥐</button>
+        <button id="sanitizeButton">Sanitize Text</button>
         <textarea id="outputText" placeholder="Sanitized text will appear here..." readonly></textarea>
-        <div class="parthenon">🏛️</div>
-        <footer>Made with ❤️</footer>
+        <footer>Made with <span id="footer-heart">❤️</span></footer>
     </div>
 
     <script>
         function sanitizeText(text) {
-            // Remove all HTML tags
+            // Remove HTML tags
             text = text.replace(/<[^>]*>/g, '');
             
-            // Remove all HTML entities
+            // Remove HTML entities
             text = text.replace(/&[^;]+;/g, '');
             
-            // Convert Unicode characters to their ASCII equivalents
+            // Normalize Unicode characters
             text = text.normalize('NFKD');
             
-            // Remove any non-ASCII characters
-            text = text.replace(/[^\x00-\x7F]/g, '');
+            // Remove combining diacritical marks
+            text = text.replace(/[\u0300-\u036f]/g, '');
+            
+            // Replace styled characters with their basic counterparts
+            text = text.replace(/[\uD800-\uDBFF][\uDC00-\uDFFF]/g, function(match) {
+                var base = match.codePointAt(0);
+                if (base >= 0x1D400 && base <= 0x1D7FF) {
+                    return String.fromCodePoint(base - 0x1D400 + 0x41);
+                }
+                return match;
+            });
             
             // Remove extra whitespace
             text = text.replace(/\s+/g, ' ').trim();
@@ -113,7 +116,13 @@
             const inputText = document.getElementById('inputText').value;
             const sanitizedText = sanitizeText(inputText);
             document.getElementById('outputText').value = sanitizedText;
+            
+            // Parse emojis in the output
+            twemoji.parse(document.getElementById('outputText'));
         });
+
+        // Parse emojis in the footer
+        twemoji.parse(document.getElementById('footer-heart'));
     </script>
 </body>
 </html>
