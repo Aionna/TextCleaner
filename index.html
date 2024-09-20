@@ -34,6 +34,7 @@
             font-size: 2em;
         }
         textarea {
+            textarea {
             width: 100%;
             height: 150px;
             margin-bottom: 20px;
@@ -48,30 +49,35 @@
         #sanitizeButton {
             display: block;
             margin: 20px auto;
-            padding: 15px 30px;
-            background-color: #4a4a4a;
-            color: #e0e0e0;
+            padding: 15px;
+            background-color: #3d3d3d;
+            color: #2d2d2d;
             border: none;
-            border-radius: 5px;
+            border-radius: 50% 50% 50% 70% / 50% 50% 70% 60%;
             cursor: pointer;
-            font-size: 18px;
+            font-size: 24px;
             transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
         }
         #sanitizeButton:hover {
-            background-color: #5a5a5a;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 8px rgba(0,0,0,0.15);
         }
+        #sanitizeButton:active {
+            transform: translateY(1px);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }    
         footer {
             text-align: center;
             margin-top: 20px;
             color: #a0a0a0;
             font-size: 0.9em;
         }
-        .emoji {
-            height: 1em;
-            width: 1em;
-            margin: 0 .05em 0 .1em;
-            vertical-align: -0.1em;
-        }
+        .parthenon {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 24px;
+            letter-spacing: -2px;
     </style>
 </head>
 <body>
@@ -80,6 +86,7 @@
         <textarea id="inputText" placeholder="Enter your text here..."></textarea>
         <button id="sanitizeButton">🥐</button>
         <textarea id="outputText" placeholder="Sanitized text will appear here..." readonly></textarea>
+        <div class="parthenon">🏛️</div>
         <footer>Made with <span id="footer-heart">❤️</span></footer>
     </div>
 
